@@ -14,18 +14,19 @@ num_steps = 1000000
 batch_size = 50
 
 # generate the datasets
-dataset = []
+dataset_x = []
+dataset_y = []
 for _ in range(50000000):
     x = np.random.normal(size=dim)
     x = x / np.linalg.norm(x, ord=2)
     y = np.random.choice([1, R])
-    dataset.append((x * y, 1 if y == R else 0))
-dataset = np.array(dataset)
+    dataset_x.append(x * y)
+    dataset_y.append([0, 1] if y == R else [1, 0])
 
 
 def sample_data(size):
-    for j in range(0, len(dataset), size):
-        yield dataset[j: j+size, 0], dataset[j: j+size, 1]
+    for j in range(0, len(dataset_x), size):
+        yield np.array(dataset_x[j: j+size), np.array(dataset_y[j: j+size])
 
 
 generator = sample_data(batch_size)
